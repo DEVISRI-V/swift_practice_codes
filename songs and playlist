@@ -1,0 +1,189 @@
+import UIKit
+import Foundation
+
+// song class with its properties
+class Song{
+    var Name = " ", Artist = " " ,Album = " "
+    var Length: Int = 0
+    // initializer
+    init (_ name: String,_ artist: String,_ album: String,_ length: Int){
+        Name = name
+        Artist = artist
+        Album = album
+        Length = length
+    }
+}
+
+// playlist class with its properties and methods
+class Playlist{
+    var Songs = [Song?](repeating: nil, count: 12) //array of objects of Song type
+    var count = 0  // to track the size of array
+    var Name = " " // name of the playlist
+    
+    //initializes the playlist name
+    init(_ name:String  )
+    {
+        Name = name
+    }
+    
+    //adds songs to the playlist
+    func add(_ song: Song)
+    {
+        if count < 12{
+        Songs.insert(song, at: count)
+            print("song added successfully")
+        count += 1
+        }
+        else
+        {
+            print("Playlist full!!! cannot add song anymore....")
+        }
+    }
+    // returns the song object that matches the index
+    func getSong(_ index: Int)-> Song?{
+       
+        return Songs[index]//unwrapp while printint
+    }
+    
+    // removes the song object from array
+    func songRemove(_ name: String)
+    {
+        var c = 0
+        var temp = 0
+        for index in Songs{
+            // checks the object whether it is nill or not. if not then the comparison will be done
+            if(index?.Name == name)
+            {
+                Songs.remove(at: c)
+                count -= 1
+                print("song deleted successfully")
+                temp = 1
+               
+            }
+            if(temp == 0)
+            {
+                c += 1
+            }
+            else{
+                break
+            }
+            
+        }
+        if(temp == 0)
+        {
+            print ("cannot find the song")
+        }
+    }
+    // prints the songs in the array
+    func printAllSongs(){
+        var sno = 1
+        var temp = 0
+        print("\n-----------------------playlist------------------------")
+        print("playlist name : \(Name)")
+        print("\n Total songs : \(size)\n\n")
+        for index in Songs{
+            if let song = index {
+                   print ("song no: \(sno)","song name:\(song.Name)","Artist:\(song.Artist)","Album:\(song.Album)","Duration:\(song.Length)", separator: "\n\n", terminator: "\n\n\n")
+                
+                temp = 1
+            }
+            sno += 1
+            
+        }
+        print("\n")
+    if(temp == 0)
+        {
+        print("playlist empty!")
+    }
+        
+    }
+    
+    // returns the size of the array
+    var size: Int {
+        get{
+            return count
+        }
+    }
+    
+    //return the total duration of the songs in the playlist
+    func totalTime()->Int{
+        var tt = 0
+        for index in Songs{
+            if let a = index{
+                tt += a.Length
+            }
+        }
+        return tt
+    }
+    
+    //returns the total duration in hh:mm:ss format
+    func formattedTotalTime()->String{
+        var tt = 0
+        for index in Songs{
+            if let a = index{
+                tt += a.Length
+            }
+        }
+        let date = Date(timeIntervalSince1970: Double(tt)/1000)
+        let formatter = DateFormatter()
+        formatter.timeZone  = TimeZone(abbreviation: "UTC")
+        formatter.dateFormat = "HH mm ss"
+        return (formatter.string(from: date))
+       
+    }
+    // removes all the songs from the playlist
+    func clear(){
+        Songs.removeAll()
+        print("playlist emptied successfully!")
+        count = 0
+    }
+}
+
+
+//driver code
+// creating the Song class objects
+var song1 = Song("Dynamite", "BTS", "BE", 195000)
+var song2 = Song("What makes you beautiful", "One direction", "1D", 184000)
+var song3 = Song("make it right", "BTS", "map of the soul: 7", 145000)
+var song4 = Song("My head and My heart", "AvaMax", "Heaven & hell", 230000)
+var song5 = Song("I like me better", "Lauv", "single", 250000)
+
+//creating playlist class object
+var playlist = Playlist("My Songs")
+playlist.add(song2)
+playlist.add(song3)
+playlist.add(song1)
+
+
+playlist.printAllSongs()
+
+//displaying the song with index 1...if there is no song, then else will be printed
+var song = playlist.getSong(1)
+if let a = song{
+    print("Song found \n name:\(a.Name)","Artist:\(a.Artist)","Album:\(a.Album)","Duration:\(a.Length)", separator: "\n")
+}
+else{
+    print("no song found :(")
+}
+
+// printing the songs in the playlist
+playlist.printAllSongs()
+//printing total duration and formated duration
+print("\n total duration of the playlist : \(playlist.totalTime()) milliseconds")
+print("\n formatted duration (HH mm ss) : \(playlist.formattedTotalTime())")
+
+//printing playlist size
+print("\n playlist size: \(playlist.size) \n")
+
+//removing song with given name
+playlist.songRemove("make it right")
+
+playlist.printAllSongs()
+
+//clearing the playlist
+playlist.clear()
+
+playlist.printAllSongs()
+
+print("playlist size:\(playlist.size)")
+
