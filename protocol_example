@@ -1,0 +1,95 @@
+import UIKit
+
+protocol zoo_department{
+    var department_name:String {get set}
+    var noOfCages: Int {get set}
+    var noOFAnimals: Int {get set}
+    var departmentNo: Int {get set}
+    func printDetails()
+}
+class sections: zoo_department{
+
+    var department_name: String
+    
+    var noOfCages: Int
+    
+    var noOFAnimals: Int
+    
+    var departmentNo: Int
+    
+    var speciesDetails = [String:String]()
+    
+    
+    
+    init(_ dname: String, _ cage: Int,_ animals: Int,_ department: Int){
+        department_name = dname
+        noOfCages = cage
+        noOFAnimals = animals
+        departmentNo = department
+    }
+   
+
+    func printDetails() {
+        print("department no: \(departmentNo)","department name: \(department_name)","no of cages available: \(noOfCages)","no of animals present: \(noOFAnimals)",separator: "\n\n")
+    }
+    func setspecies(_ list: [String:String]) {
+        speciesDetails = list
+      
+    }
+    
+}
+class sectionManagement: sections{
+    var cost_for_food: Double {
+        get{
+            return Double(noOFAnimals * 5000)
+        }
+    }
+    
+   override init(_ dname: String, _ cage: Int,_ animals: Int,_ department: Int)
+    {
+        super.init(dname, cage, animals, department)
+    }
+    
+    var cost_for_medicine: Double{
+        get{
+            return Double(noOFAnimals * 1000)
+        }
+    }
+    
+    func getDetails(){
+        print("---------------species details------------------")
+        for (key,value) in speciesDetails{
+            print ("species name: \(key)","No of species: \(value)",separator: "\n")
+        }
+        print("cost of food for department \(department_name) is \(cost_for_food)",terminator: "\n\n")
+        print("cost of medicine for department \(department_name) is \(cost_for_medicine)",terminator: "\n\n")
+        
+    }
+}
+
+var herbivoreManagement = sectionManagement("herbivore",40,300,2)
+herbivoreManagement.printDetails()
+
+var Hspecies = [
+    "dear" : "50",
+    "elephant" : "30",
+    "zebra" : "13",
+    "giraffe" : "25"
+]
+herbivoreManagement.setspecies(Hspecies)
+
+herbivoreManagement.getDetails()
+
+var carnivoreManagement = sectionManagement("carnivores",50,150,1)
+carnivoreManagement.printDetails()
+
+var species = [
+    "lion" : "20",
+    "tiger" : "30",
+    "cheetah" : "25",
+    "fox" : "15"
+]
+carnivoreManagement.setspecies(species)
+
+carnivoreManagement.getDetails()
+
